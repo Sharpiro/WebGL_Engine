@@ -13,6 +13,7 @@
 *.map
 */.tscache
 !GruntFile.js
+!*/scripts
 
 NodeServer2.Server\public\app\app.js
 NodeServer2.Server\public\app\app.js.map
