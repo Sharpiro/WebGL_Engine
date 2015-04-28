@@ -2,7 +2,7 @@
 ///<reference path="./maths/vec3.ts"/>
 ///<reference path="./graphics/window.ts"/>
 module Main {
-    
+
 
     import Mat4 = Maths.Mat4;
     import Vec3 = Maths.Vec3;
@@ -22,7 +22,7 @@ module Main {
     main();
 
 
-    
+
 
     function main() {
         testing();
@@ -30,13 +30,18 @@ module Main {
         initBuffers();
         drawScene();
     }
-    
+
 
     function testing() {
     }
 
     function init() {
         glWindow = new GLWindow("WebGL", 960, 540);
+        mvMatrix = Maths.Mat4.identity();
+        orthographicMatrix = Mat4.orthographic(0, 16, 0, 9, -1, 1);
+        perspectiveMatrix = Mat4.perspective(45, 640.0 / 480.0, .1, 100.0);
+
+        mvMatrix.translate(new Vec3(0.0, 0.0, -5.0));
     }
 
     function loadShaders() {
@@ -63,12 +68,12 @@ module Main {
     function initBuffers() {
         var vertices = [
             0.0, 0.0, 0.0,
+            0.0, 1.0, 0.0,
             1.0, 1.0, 0.0,
-            1.0, 0.0, 0.0,
-            0.0, 1.0, 0.0
+            1.0, 0.0, 0.0
         ];
 
-        var indices = [0, 1, 2, 0, 3, 2];
+        var indices = [0, 1, 2, 0, 2, 3];
         //vertexBuffer
         vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -78,36 +83,34 @@ module Main {
         indexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
-        //gl.drawElements(gl.TRIANGLES, 4, gl.UNSIGNED_SHORT, null);
+    }
+
+    function run(time: number) {
+        console.log("doing");
+        setMatrixUniforms();
+        
     }
 
     function drawScene() {
-        //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         try {
-            //perspectiveMatrix = makePerspective(45, 640.0 / 480.0, 0.1, 100.0);
-            //orthographicMatrix = makeOrtho(0.0, 16.0, 0.0, 9.0, -1.0, 1.0);
-            orthographicMatrix = Maths.Mat4.orthographic(0, 16, 0, 9, -1, 1);
-            mvMatrix = Maths.Mat4.identity();
-            mvMatrix.translate(new Vec3(8.0, 4.0, 0.0));
-            //TODO: Perspective
-            //mvTranslate([-0.0, 0.0, -2.0]);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            mvMatrix.rotate(1, new Vec3(0, 1, 0));
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
             gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
             setMatrixUniforms();
-            //gl.drawArrays(gl.TRIANGLES, 0, 6);  
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-            gl.drawElements(gl.TRIANGLES, 4, gl.UNSIGNED_SHORT, 0);
-
+            gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
             var error = gl.getError();
             if (error !== gl.NO_ERROR)
                 console.log(error);
-            else
-                console.log("No Error");
 
         } catch (ex) {
             console.log("Error in 'DrawScene':\n %s", ex);
         }
+        requestAnimationFrame(drawScene);
+
     }
+
 
     function getRequestSync(url: string) {
         var request = new XMLHttpRequest();
@@ -144,12 +147,11 @@ module Main {
 
     function setMatrixUniforms() {
         var pUniform = gl.getUniformLocation(shaderProgram, "pr_matrix");
-        gl.uniformMatrix4fv(pUniform, false, new Float32Array(orthographicMatrix.elements));
-        //gl.uniformMatrix4fv(1, false, )
+        gl.uniformMatrix4fv(pUniform, false, new Float32Array(perspectiveMatrix.elements));
 
         var mvUniform = gl.getUniformLocation(shaderProgram, "mv_Matrix");
         gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.elements));
     }
 
-    
+
 }
