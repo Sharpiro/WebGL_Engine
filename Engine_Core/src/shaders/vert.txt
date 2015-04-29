@@ -1,8 +1,10 @@
 ﻿attribute vec3 aVertexPosition;
+attribute vec3 thing;
 
 uniform mat4 mv_Matrix;
 uniform mat4 pr_matrix;
 
 void main(void) {
-gl_Position = pr_matrix * mv_Matrix * vec4(aVertexPosition, 1.0);
+	gl_Position = pr_matrix * mv_Matrix * vec4(aVertexPosition, 1.0);
+	//gl_Position = pr_matrix * mv_Matrix;
 }
