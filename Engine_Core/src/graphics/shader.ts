@@ -14,7 +14,7 @@ module Graphics {
 
             //compile vert shader
             gl.shaderSource(vertexShader, vertShaderData);
-            gl.compileShader(vertexShader);  
+            gl.compileShader(vertexShader);
             if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
                 alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(vertexShader));
             }
@@ -38,6 +38,14 @@ module Graphics {
                 alert("Unable to initialize the shader program.");
             }
             this.program = shaderProgram;
+        }
+
+        public getUniformLocation(name: string): WebGLUniformLocation {
+            return gl.getUniformLocation(this.program, name);
+        }
+
+        public getAttributeLocation(name: string): number {
+            return gl.getAttribLocation(this.program, name);
         }
 
         public enable() {

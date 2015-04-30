@@ -9,7 +9,7 @@ module Graphics {
     export class GLWindow {
 
         public canvas: HTMLCanvasElement;
-        public mousePosition: Vec2;
+        public static mousePosition: Vec2 = new Vec2(0,0);
 
         constructor(public name: string, public width: number, public height: number) {
             this.canvas = document.createElement("canvas");
@@ -31,9 +31,18 @@ module Graphics {
             this.canvas.addEventListener("mousemove", this.mouseMoveCallBack);
         }
 
+        public clear() {
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        }
+
         private mouseMoveCallBack(event: MouseEvent) {
-            this.mousePosition.x = event.clientX * 16 / 960;
-            this.mousePosition.x = 9 - event.clientY * 9 / 540;
+            try {
+                GLWindow.mousePosition.x = event.clientX * 16 / 960 || 0;
+                GLWindow.mousePosition.y = 9 - event.clientY * 9 / 540 || 0;
+                //console.log("(%s, %s)", GLWindow.mousePosition.x, GLWindow.mousePosition.y);
+            } catch (ex) {
+                console.log("could not set mouse position");
+            }
         }
     }
 }

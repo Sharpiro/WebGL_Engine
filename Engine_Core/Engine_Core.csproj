@@ -28,8 +28,12 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="src\app.ts" />
+    <TypeScriptCompile Include="src\data\constants.ts" />
+    <TypeScriptCompile Include="src\graphics\buffers\buffer.ts" />
+    <TypeScriptCompile Include="src\graphics\buffers\indexbuffer.ts" />
+    <TypeScriptCompile Include="src\graphics\buffers\vertexarray.ts" />
     <TypeScriptCompile Include="src\graphics\shader.ts" />
-    <TypeScriptCompile Include="src\graphics\window.ts" />
+    <TypeScriptCompile Include="src\graphics\glwindow.ts" />
     <TypeScriptCompile Include="src\maths\functions.ts" />
     <TypeScriptCompile Include="src\maths\mat4.ts" />
     <TypeScriptCompile Include="src\maths\vec2.ts" />
@@ -84,6 +88,7 @@
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>D:\Git_Base\WebGL_Engine\Engine_Core\scripts\copy_shaders.cmd</PreBuildEvent>
+    <PreBuildEvent>cd $(ProjectDir)scripts
+copy_shaders.cmd</PreBuildEvent>
   </PropertyGroup>
 </Project>
