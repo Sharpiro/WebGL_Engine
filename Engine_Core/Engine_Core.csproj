@@ -32,6 +32,8 @@
     <TypeScriptCompile Include="src\graphics\window.ts" />
     <TypeScriptCompile Include="src\maths\functions.ts" />
     <TypeScriptCompile Include="src\maths\mat4.ts" />
+    <TypeScriptCompile Include="src\maths\vec2.ts" />
+    <TypeScriptCompile Include="src\maths\vec4.ts" />
     <TypeScriptCompile Include="src\maths\vec3.ts" />
     <TypeScriptCompile Include="src\networking\network.ts" />
   </ItemGroup>

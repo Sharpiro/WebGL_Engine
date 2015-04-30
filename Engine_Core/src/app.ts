@@ -16,11 +16,15 @@ module Main {
     //var shaderProgram: WebGLProgram;
     //var vertexPositionAttribute: number;
     var vertexBuffer: WebGLBuffer;
+    var colorBuffer: WebGLBuffer;
     var perspectiveMatrix: any;
     var orthographicMatrix: any;
     var mvMatrix: any;
     var indexBuffer: any;
-
+    var shader: Shader;
+    var pUniform: any;
+    var mvUniform: any;
+    var lightPos: any;
     main();
 
 
@@ -28,15 +32,13 @@ module Main {
 
     function main() {
         testing();
-        loadShaders();
         initBuffers();
         drawScene(null);
     }
 
 
     function testing() {
-        var shader1 = new Shader("http://localhost/shaders/vert.txt", "http://localhost/shaders/frag.txt");
-        console.log();
+
     }
 
     function init() {
@@ -45,10 +47,9 @@ module Main {
         orthographicMatrix = Mat4.orthographic(0, 16, 0, 9, -1, 1);
         perspectiveMatrix = Mat4.perspective(45, 640.0 / 480.0, .1, 100.0);
 
-        mvMatrix.translate(new Vec3(-2.5, 0.0, -5.0));
-    }
-
-    function loadShaders() {
+        //mvMatrix.translate(new Vec3(-2.5, 0.0, -5.0));
+        shader = new Shader("http://localhost/shaders/vert.txt", "http://localhost/shaders/frag.txt");
+        shader.enable();
 
     }
 
@@ -60,6 +61,13 @@ module Main {
             1.0, 0.0, 0.0
         ];
 
+        var colors = [
+            0.2, 0.4, 1.0, 1.0,
+            0.2, 0.4, 1.0, 1.0,
+            0.2, 0.4, 1.0, 1.0,
+            0.2, 0.4, 1.0, 1.0
+        ];
+
         var indices = [0, 1, 2, 0, 2, 3];
         //vertexBuffer
         vertexBuffer = gl.createBuffer();
@@ -67,34 +75,51 @@ module Main {
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
+        //colorBuffer
+        colorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
         //indexbuffer
         indexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+        pUniform = gl.getUniformLocation(shader.program, "pr_matrix");
+        mvUniform = gl.getUniformLocation(shader.program, "mv_Matrix");
+        lightPos = gl.getUniformLocation(shader.program, "lightPos");
+
+
     }
 
     function drawScene(time: number) {
         try {
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-            var shader = new Shader("http://localhost/shaders/vert.txt", "http://localhost/shaders/frag.txt");
-            shader.enable();
-            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
+            //vertices
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
             var vertexPositionAttribute = gl.getAttribLocation(shader.program, "aVertexPosition");
             gl.enableVertexAttribArray(vertexPositionAttribute);
             gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
-            
-            mvMatrix.rotate(.25, new Vec3(0, 1, 0));
+            gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-            
 
-            var pUniform = gl.getUniformLocation(shader.program, "pr_matrix");
-            gl.uniformMatrix4fv(pUniform, false, new Float32Array(perspectiveMatrix.elements));
-            var mvUniform = gl.getUniformLocation(shader.program, "mv_Matrix");
+            //colors
+            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+            var colorPositionAttribute = gl.getAttribLocation(shader.program, "aVertexColor");
+            gl.enableVertexAttribArray(colorPositionAttribute);
+            gl.vertexAttribPointer(colorPositionAttribute, 4, gl.FLOAT, false, 0, 0);
+            gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+            //mvMatrix.rotate(.25, new Vec3(0, 1, 0));
+
+            gl.uniformMatrix4fv(pUniform, false, new Float32Array(orthographicMatrix.elements));
             gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.elements));
-
+            gl.uniform2f(lightPos, glWindow.mousePosition.x, glWindow.mousePosition.y);
+            
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
             gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
             var error = gl.getError();
             //if (error !== gl.NO_ERROR)
