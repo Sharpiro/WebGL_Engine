@@ -3,7 +3,7 @@
 
         private bufferhandle: WebGLBuffer;
 
-        constructor(data: Array<number>, public componentCount: number) {
+        constructor(public data: Array<number>, public componentCount: number, public glIndex: number) {
             this.bufferhandle = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferhandle);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);

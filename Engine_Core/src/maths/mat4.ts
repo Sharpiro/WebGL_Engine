@@ -32,6 +32,22 @@ module Maths {
             this.elements = result;
         }
 
+        public static multiply(left: Mat4, right: Mat4): Mat4 {
+            var result = Mat4.identity();
+
+            for (var y = 0; y < 4; y++) {
+                for (var x = 0; x < 4; x++) {
+                    var sum = 0;
+                    for (var e = 0; e < 4; e++) {
+                        sum += left.elements[y + e * 4] * right.elements[e + x * 4];
+                    }
+                    result.elements[y + x * 4] = sum;
+                }
+            }
+
+            return result;
+        }
+
         public static print(matrix: Mat4) {
             for (var y = 0; y < 16; y++) {
                 console.log(matrix.elements[y]);
@@ -94,7 +110,17 @@ module Maths {
             this.elements[2 + 3 * 4] = translation.z;
         }
 
-        public rotate(degrees: number, axis: Vec3): void {
+        public static translate(translation: Vec3): Mat4{
+            var result = Mat4.identity();
+
+            result.elements[0 + 3 * 4] = translation.x;
+            result.elements[1 + 3 * 4] = translation.y;
+            result.elements[2 + 3 * 4] = translation.z;
+
+            return result;
+        }
+
+        public rotate(degrees: number, axis: Vec3): Mat4 {
             var rotationMatrix = Mat4.identity();
             var r = Functions.toRadians(degrees);
             var c = Math.cos(r);
@@ -117,6 +143,33 @@ module Maths {
             rotationMatrix.elements[1 + 2 * 4] = y * z * omc - x * s;
             rotationMatrix.elements[2 + 2 * 4] = z * omc + c;
             this.multiply(rotationMatrix);
+            return this;
+        }
+
+        public static rotate(degrees: number, axis: Vec3): Mat4 {
+            var rotationMatrix = Mat4.identity();
+            var r = Functions.toRadians(degrees);
+            var c = Math.cos(r);
+            var s = Math.sin(r);
+            var omc = 1.0 - c;
+
+            var x = axis.x;
+            var y = axis.y;
+            var z = axis.z;
+
+            rotationMatrix.elements[0 + 0 * 4] = x * omc + c;
+            rotationMatrix.elements[1 + 0 * 4] = y * x * omc + z * s;
+            rotationMatrix.elements[2 + 0 * 4] = x * z * omc - y * s;
+
+            rotationMatrix.elements[0 + 1 * 4] = x * y * omc - z * s;
+            rotationMatrix.elements[1 + 1 * 4] = y * omc + c;
+            rotationMatrix.elements[2 + 1 * 4] = y * z * omc + x * s;
+
+            rotationMatrix.elements[0 + 2 * 4] = x * z * omc + y * s;
+            rotationMatrix.elements[1 + 2 * 4] = y * z * omc - x * s;
+            rotationMatrix.elements[2 + 2 * 4] = z * omc + c;
+
+            return rotationMatrix;
         }
     }
 }

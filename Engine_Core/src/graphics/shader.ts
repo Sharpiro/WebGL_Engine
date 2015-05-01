@@ -1,5 +1,9 @@
 ﻿///<reference path="../networking/network.ts"/>
+///<reference path="../maths/mat4.ts"/>
+
 import Network = Networking.Network;
+import Mat4 = Maths.Mat4;
+
 module Graphics {
     export class Shader {
 
@@ -48,8 +52,8 @@ module Graphics {
             gl.uniform2f(this.getUniformLocation(name), vector.x, vector.y);
         }
 
-        public setUniformMatrix(name: string, data: Array<number>) {
-            gl.uniformMatrix4fv(this.getUniformLocation(name), false, new Float32Array(data));
+        public setUniformMatrix(name: string, data: Mat4) {
+            gl.uniformMatrix4fv(this.getUniformLocation(name), false, new Float32Array(data.elements));
         }
 
         public getAttributeLocation(name: string): number {

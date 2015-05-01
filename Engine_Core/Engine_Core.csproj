@@ -32,6 +32,8 @@
     <TypeScriptCompile Include="src\graphics\buffers\buffer.ts" />
     <TypeScriptCompile Include="src\graphics\buffers\indexbuffer.ts" />
     <TypeScriptCompile Include="src\graphics\buffers\vertexarray.ts" />
+    <TypeScriptCompile Include="src\graphics\meshes\quad.ts" />
+    <TypeScriptCompile Include="src\graphics\renderable2d.ts" />
     <TypeScriptCompile Include="src\graphics\shader.ts" />
     <TypeScriptCompile Include="src\graphics\glwindow.ts" />
     <TypeScriptCompile Include="src\maths\functions.ts" />

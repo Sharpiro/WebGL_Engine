@@ -3,13 +3,13 @@
 uniform vec2 lightPos;
 
 varying vec4 vColor;
-varying vec3 vPosition;
+varying vec4 vPosition;
 
 void main(void)
 {
-	float intensity = 0.1 / length(vPosition.xy - lightPos);
+	float intensity = 0.2 / length(vPosition.xy - lightPos);
 	//float temp = length(vPosition.xy);
 	//gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
-	//nothing
+	//gl_FragColor = vColor;
 	gl_FragColor = vColor * intensity;
 }
