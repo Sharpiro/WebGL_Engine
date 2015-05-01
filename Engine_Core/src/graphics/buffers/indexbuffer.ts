@@ -15,7 +15,7 @@
         }
 
         public unbind(): void {
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0);
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         }
 
         public getCount(): number {

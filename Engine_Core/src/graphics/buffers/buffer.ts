@@ -14,8 +14,8 @@
             gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferhandle);
         }
 
-        //public unbind(): void {
-        //    gl.bindBuffer(gl.ARRAY_BUFFER, 0);
-        //}
+        public unbind(): void {
+            gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        }
     }
 }

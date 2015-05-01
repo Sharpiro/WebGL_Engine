@@ -44,6 +44,14 @@ module Graphics {
             return gl.getUniformLocation(this.program, name);
         }
 
+        public setUniformVec2(name: string, vector: Vec2) {
+            gl.uniform2f(this.getUniformLocation(name), vector.x, vector.y);
+        }
+
+        public setUniformMatrix(name: string, data: Array<number>) {
+            gl.uniformMatrix4fv(this.getUniformLocation(name), false, new Float32Array(data));
+        }
+
         public getAttributeLocation(name: string): number {
             return gl.getAttribLocation(this.program, name);
         }

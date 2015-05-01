@@ -28,6 +28,7 @@ module Main {
     var lightPos: any;
     var animationHandle: number;
     var indexBuffer: IndexBuffer;
+    var shader: Shader;
     main();
 
 
@@ -83,12 +84,8 @@ module Main {
         vertexArray.addBuffer(new Buffer(vertices, 3), 0);
         vertexArray.addBuffer(new Buffer(colors, 4), 1);
         indexBuffer = new IndexBuffer(indices);
-        var shader = new Shader(Constants.vertexLocation, Constants.fragmentLocation);
+        shader = new Shader(Constants.vertexLocation, Constants.fragmentLocation);
         shader.enable();
-
-        pUniform = shader.getUniformLocation("pr_matrix");
-        mvUniform = shader.getUniformLocation("mv_Matrix");
-        lightPos = shader.getUniformLocation("lightPos");
     }
 
     function drawScene(time: number): any {
@@ -96,12 +93,13 @@ module Main {
             glWindow.clear();
             //mvMatrix.rotate(.25, new Vec3(0, 1, 0));
 
-            gl.uniformMatrix4fv(pUniform, false, new Float32Array(orthographicMatrix.elements));
-            gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.elements));
-            gl.uniform2f(lightPos, GLWindow.mousePosition.x, GLWindow.mousePosition.y);
+            shader.setUniformMatrix("prMatrix", orthographicMatrix.elements);
+            shader.setUniformMatrix("mvMatrix", mvMatrix.elements);
+            shader.setUniformVec2("lightPos", GLWindow.mousePosition);
 
             indexBuffer.bind();
             gl.drawElements(gl.TRIANGLES, indexBuffer.getCount(), gl.UNSIGNED_SHORT, 0);
+            indexBuffer.unbind();
 
         } catch (ex) {
             console.log("Error in 'DrawScene':\n %s", ex);

@@ -1,15 +1,15 @@
 ﻿attribute vec3 aVertexPosition;
 attribute vec4 aVertexColor;
 
-uniform mat4 mv_Matrix;
-uniform mat4 pr_matrix;
+uniform mat4 mvMatrix;
+uniform mat4 prMatrix;
 
 varying vec4 vColor;
 varying vec3 vPosition;
 
 void main(void) {
-	gl_Position = pr_matrix * mv_Matrix * vec4(aVertexPosition, 1.0);
+	gl_Position = prMatrix * mvMatrix * vec4(aVertexPosition, 1.0);
 	vColor = aVertexColor;
 	vPosition = aVertexPosition;
-	//gl_Position = pr_matrix * mv_Matrix;
+	//gl_Position = prMatrix * mvMatrix;
 }
