@@ -10,11 +10,10 @@ module Graphics {
         public program: WebGLProgram;
 
         constructor(public vertSrc: string, public fragSrc: string) {
-            var vertShaderData = Network.getRequestSync(vertSrc);
-            var fragShaderData = Network.getRequestSync(fragSrc);
-            //vertexShader
-            var vertexShader: WebGLShader = gl.createShader(gl.VERTEX_SHADER);;
-            var fragShader: WebGLShader = gl.createShader(gl.FRAGMENT_SHADER);;
+            const vertShaderData = Network.getRequestSync(vertSrc);
+            const fragShaderData = Network.getRequestSync(fragSrc); //vertexShader
+            const vertexShader: WebGLShader = gl.createShader(gl.VERTEX_SHADER);;
+            const fragShader: WebGLShader = gl.createShader(gl.FRAGMENT_SHADER);;
 
             //compile vert shader
             gl.shaderSource(vertexShader, vertShaderData);
@@ -31,7 +30,7 @@ module Graphics {
             }
 
             // Create the shader program
-            var shaderProgram = gl.createProgram();
+            const shaderProgram = gl.createProgram();
             gl.attachShader(shaderProgram, vertexShader);
             gl.attachShader(shaderProgram, fragShader);
             gl.linkProgram(shaderProgram);

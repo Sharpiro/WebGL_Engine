@@ -34,8 +34,10 @@
     <TypeScriptCompile Include="src\graphics\buffers\vertexarray.ts" />
     <TypeScriptCompile Include="src\graphics\meshes\quad.ts" />
     <TypeScriptCompile Include="src\graphics\renderable2d.ts" />
+    <TypeScriptCompile Include="src\graphics\renderer2d.ts" />
     <TypeScriptCompile Include="src\graphics\shader.ts" />
     <TypeScriptCompile Include="src\graphics\glwindow.ts" />
+    <TypeScriptCompile Include="src\graphics\simple2drenderer.ts" />
     <TypeScriptCompile Include="src\maths\functions.ts" />
     <TypeScriptCompile Include="src\maths\mat4.ts" />
     <TypeScriptCompile Include="src\maths\vec2.ts" />

@@ -13,7 +13,7 @@ module Graphics {
         protected colors: Array<number>;
         public mvMatrix: Mat4;
 
-        constructor(public position: Vec3, protected size: Vec2, color: Vec4, shader: Shader) {
+        constructor(public position: Vec3, protected size: Vec2, color: Vec4, public shader: Shader) {
             this.mvMatrix = Mat4.identity();
             this.mvMatrix.translate(position);
             //this.vao = new VertexArray();
