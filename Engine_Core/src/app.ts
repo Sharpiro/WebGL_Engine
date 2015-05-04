@@ -23,9 +23,11 @@ module Main {
     let animationHandle: number;
     let quad: Quad;
     let quad2: Quad;
+    let quad3: Quad;
+    let quad4: Quad;
     let renderer: Simple2DRender;
 
-    function main() {
+    function main(): void {
         try {
             testing();
             init();
@@ -54,8 +56,10 @@ module Main {
         //perspectiveQuad
         //quad = new Quad(new Vec3(-1, -2, -15), new Vec2(4, 4), shader);
         //orthoQuad
-        quad2 = new Quad(new Vec3(4, 4, 0), new Vec2(2, 6), new Vec4(0.0, 1.0, 0.0, 1.0), shader);
         quad = new Quad(new Vec3(0, 0, 0), new Vec2(2, 9), new Vec4(1.0, 0.0, 0.0, 1.0), shader);
+        quad2 = new Quad(new Vec3(4, 4, 0), new Vec2(2, 6), new Vec4(0.0, 1.0, 0.0, 1.0), shader);
+        quad3 = new Quad(new Vec3(9, 0, 0), new Vec2(2, 6), new Vec4(0.36, 0.36, 1.0, 1.0), shader);
+        quad4 = new Quad(new Vec3(14, 0, 0), new Vec2(2, 6), new Vec4(1, 0.2, 1.0, 1.0), shader);
         renderer = new Simple2DRender();
     }
 
@@ -68,8 +72,9 @@ module Main {
 
             renderer.submit(quad);
             renderer.submit(quad2);
+            renderer.submit(quad3);
+            renderer.submit(quad4);
             renderer.flush();
-
         } catch (ex) {
             console.log("Error in 'DrawScene':\n %s", ex);
             cancelAnimationFrame(animationHandle);
